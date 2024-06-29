@@ -126,7 +126,7 @@ async function releaseQueueReadingLock() {
  * time in seconds for the job status stored in Redis. By default, it is set to 86400 seconds (24
  * hours). If you pass `-1` as the value for `exp`, it means that the job
  */
-async function updateJobStatus(jobName, status, exp = 86400) {
+async function updateJobStatus(jobName, status, exp = enums.defaultFailedAge) {
   const redis = getRedis();
   const redisKey = `${enums.jobStatusHash}:${jobName}`;
   await redis.set(redisKey, status);

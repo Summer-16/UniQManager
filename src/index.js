@@ -12,8 +12,8 @@ and checking job statuses. */
 class UniQManager {
 
   constructor(props) {
-    const { redisConfig, callbacksMap } = props;
-    this.callbacksMap = callbacksMap;
+    const { redisConfig, options } = props;
+    this.options = options;
     try {
       this.redis = initRedis(redisConfig);
     } catch (error) {
@@ -50,7 +50,7 @@ class UniQManager {
    * started for polling.
    */
   startWorkers(noOfWorkers) {
-    startPolling(this.callbacksMap, noOfWorkers);
+    startPolling(this.options);
   }
 
   /**

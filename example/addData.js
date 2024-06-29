@@ -5,11 +5,17 @@ const uniQManager = new UniQManager({
     host: "127.0.0.1",
     port: "6379"
   },
-  callbacksMap: {
-    logProject: async (data) => {
-      console.log("Running logProject callback");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log(`Logging the current project data received from queue:`, data);
+  options: {
+    maxWorkers: 5,
+    finishedAge: 10000,
+    failedAge: 60000,
+    debug: true,
+    callbacksMap: {
+      logProject: async (data) => {
+        console.log("Running logProject callback");
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.log(`Logging the current project data received from queue:`, data);
+      }
     }
   }
 });

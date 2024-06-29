@@ -13,6 +13,8 @@ const enums = {
   workerSpawnerTime: `${packageName}:workerSpawnerTime`,
   queueReadingLock: `${packageName}:queueReadingLock`,
   maxWorkerCount: 5,
+  defaultFinishedAge: 3600,
+  defaultFailedAge: 86400,
 };
 
 module.exports = enums;

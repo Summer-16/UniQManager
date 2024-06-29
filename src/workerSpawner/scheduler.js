@@ -45,10 +45,10 @@ function _onComplete(taskName, info) {
  * spawned for processing tasks concurrently. It helps in controlling the workload distribution and
  * resource utilization.
  */
-async function startPolling(callbacksMap, maxWorkers) {
+async function startPolling(options) {
   try {
     const time = pickNumberFromPrimes(); // this will pick a random number from prime numbers, using prime helps to reduce the collision between the workers from different nodes or different instances (1st preventer)
-    const worker = new Worker({ maxWorkers, callbacksMap });
+    const worker = new Worker(options);
     const taskName = `QueueWorkerSpawner-` + nanoTime();
     console.info(`${enums.packageName} - Starting worker polling with taskName: ${taskName} and time: ${time}`);
     createBackgroundTask(taskName, `*/${time} * * * * *`, {}, worker.spawn.bind(worker), _onComplete);

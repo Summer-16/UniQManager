@@ -5,17 +5,23 @@ const uniQManager = new UniQManager({
     host: "127.0.0.1",
     port: "6379"
   },
-  callbacksMap: {
-    logProject: async (data) => {
-      console.log("Running logProject callback");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log(`Logging the current project data received from queue:`, data);
+  options: {
+    maxWorkers: 5,
+    finishedAge: 10000,
+    failedAge: 60000,
+    debug: true,
+    callbacksMap: {
+      logProject: async (data) => {
+        console.log("Running logProject callback");
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.log(`Logging the current project data received from queue:`, data);
+      }
     }
   }
 });
 
 async function addDataToQueue() {
-  const noOfQueue = 5, noOfData = 1;
+  const noOfQueue = 5, noOfData = 10;
 
   for (let i = 0; i < noOfQueue; i++) {
     for (let j = 0; j < noOfData; j++) {
@@ -27,7 +33,7 @@ async function addDataToQueue() {
 
 // Start the workers and add data to the queue
 function main() {
-  uniQManager.startWorkers(5);
+  uniQManager.startWorkers();
   addDataToQueue();
 }
 
