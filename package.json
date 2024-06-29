@@ -2,8 +2,28 @@
   "name": "uniqmanager",
   "description": "A Redis based nodejs queue, with global workers",
   "version": "1.0.0",
-  "author": "Shivam Parashar",
+  "author": {
+    "name": "Shivam Parashar",
+    "email": "shivamparashar33@gmail.com",
+    "url": "https://github.com/Summer-16"
+  },
+  "bugs": {
+    "url": "https://github.com/Summer-16/UniQManager/issues"
+  },
+  "homepage": "https://github.com/Summer-16/UniQManager",
   "license": "ISC",
+  "keywords": [
+    "node",
+    "queue",
+    "redis",
+    "redis-queue",
+    "redisQueue",
+    "node-queue",
+    "nodeQueue"
+  ],
+  "files": [
+    "dist"
+  ],
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
