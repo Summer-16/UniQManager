@@ -46,13 +46,13 @@ async function dequeue(queueName) {
   const queueKey = `${enums.queueFolder}:${queueName}:queue`;
   const queueKeyExists = await redis.exists(queueKey);
   if (!queueKeyExists) {
-    console.log('Queue does not exist');
+    console.info(`${enums.packageName} - Queue ${queueName} does not exist, cannot dequeue.`);
     return null;
   }
 
   const elements = await redis.zrange(queueKey, 0, 0);
   if (elements.length === 0) {
-    console.log('Queue is empty');
+    console.info(`${enums.packageName} - Queue ${queueName} is empty, cannot dequeue.`);
     return null;
   }
 

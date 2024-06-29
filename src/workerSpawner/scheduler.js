@@ -2,6 +2,7 @@
 const CronJob = require('cron').CronJob;
 const Worker = require('./worker');
 const { nanoTime, pickNumberFromPrimes } = require('../helper/utils');
+const enums = require('../helper/enums');
 
 /**
  * @desc - Create the background task 
@@ -30,7 +31,7 @@ function createBackgroundTask(taskName, time, info, action, onComplete) {
  * relevant information related to the task completion.
  */
 function _onComplete(taskName, info) {
-  console.debug(`${taskName} completed, info: ${info}`);
+  // console.debug(`${taskName} completed, info: ${info}`); // enable for debugging
 };
 
 /**
@@ -49,11 +50,11 @@ async function startPolling(callbacksMap, maxWorkers) {
     const time = pickNumberFromPrimes(); // this will pick a random number from prime numbers, using prime helps to reduce the collision between the workers from different nodes or different instances (1st preventer)
     const worker = new Worker({ maxWorkers, callbacksMap });
     const taskName = `QueueWorkerSpawner-` + nanoTime();
-    console.debug(`Task Name: ${taskName}, Time: ${time}`);
+    console.info(`${enums.packageName} - Starting worker polling with taskName: ${taskName} and time: ${time}`);
     createBackgroundTask(taskName, `*/${time} * * * * *`, {}, worker.spawn.bind(worker), _onComplete);
   }
   catch (ex) {
-    console.error("ex: ", ex);
+    console.error(`${enums.packageName} - Exception in starting worker polling`, ex);
   }
 };
 

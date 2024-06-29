@@ -1,16 +1,17 @@
 
-const queueName = "UniQManager";
+const packageName = "UniQManager";
 
 /* This code snippet is defining an object named `enums` that contains various key-value pairs. Each
 key represents a specific constant related to a queue management system, and the corresponding value
-is derived from the `queueName` constant. */
+is derived from the `packageName` constant. */
 const enums = {
-  queueDB: queueName,
-  queueFolder: `${queueName}:queues`,
-  queueStatusHash: `${queueName}:queueStatus`,
-  jobStatusHash: `${queueName}:jobStatus`,
-  workerSpawnerTime: `${queueName}:workerSpawnerTime`,
-  queueReadingLock: `${queueName}:queueReadingLock`,
+  packageName,
+  queueDB: packageName,
+  queueFolder: `${packageName}:queues`,
+  queueStatusHash: `${packageName}:queueStatus`,
+  jobStatusHash: `${packageName}:jobStatus`,
+  workerSpawnerTime: `${packageName}:workerSpawnerTime`,
+  queueReadingLock: `${packageName}:queueReadingLock`,
   maxWorkerCount: 5,
 };
 

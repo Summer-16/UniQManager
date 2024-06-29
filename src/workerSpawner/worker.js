@@ -46,13 +46,12 @@ class Worker {
           const unLockedQueues = await getUnlockedQueue(taskName);
 
           if (unLockedQueues.length === 0) {
-            // await new Promise((resolve) => setTimeout(resolve, 2000));
             releaseQueueReadingLock(taskName);
-            console.log('Either no Queues are there or all are locked');
+            console.debug(`${enums.packageName} - No unlocked queues found, releasing lock and exiting...`);
             return;
           } else {
             const iterations = Math.min(noOfWorkersToSpawn, unLockedQueues.length);
-            console.log("Current worker count: ", this.currentWorkerCount, "Max worker count: ", this.maxWorkers, "No of workers to spawn: ", iterations);
+            console.debug(`${enums.packageName} - Current worker count: ${this.currentWorkerCount}, Max worker count: ${this.maxWorkers}, No of workers to spawn: ${iterations}`);
             for (let i = 0; i < iterations; i++) {
               const queueName = unLockedQueues[i];
               this.currentWorkerCount = this.currentWorkerCount + 1;
@@ -60,27 +59,25 @@ class Worker {
                 .then(async (result) => {
                   await removeQueueLock(queueName);
                   this.currentWorkerCount = this.currentWorkerCount - 1;
-                  console.log("Job finished: ", queueName);
+                  // console.debug(`${enums.packageName} - Worker completed job: ${queueName}`);
                 })
                 .catch(async (err) => {
                   await removeQueueLock(queueName);
                   this.currentWorkerCount = this.currentWorkerCount - 1;
-                  console.log("Error in job: ", queueName);
+                  console.error(`${enums.packageName} - Error in worker for queue: ${queueName}:`, err);
                 });
             }
             releaseQueueReadingLock(taskName);
           }
         }
       } else {
-        console.log('Max worker count reached, will spawn new workers in next cycle');
+        // console.debug(`${enums.packageName} - Max worker count reached, exiting...`);
       }
-
     } catch (error) {
-      console.error(`Error in spawnWorkers: `, error);
+      console.error(`${enums.packageName} - Error in spawn: `, error);
     }
     finally {
       this.isTaskRunning = false;
-      // console.info(`Task Ended...`);
     }
   }
 
@@ -98,7 +95,7 @@ class Worker {
     while (true) {
       try {
         const result = await dequeue(queueName);
-        console.log("Data removed: ", result);
+        console.info(`${enums.packageName} - Worker callback running for queue: ${queueName}`, result);
 
         if (result === null) {
           break;
@@ -114,17 +111,17 @@ class Worker {
               await updateJobStatus(result.jobId, 'Finished', 3600);
             }
             catch (error) {
-              console.error('Error in callback: ', actionName, error);
+              console.error(`${enums.packageName} - Error in workerCallback for queue: ${queueName}: `, error);
               await updateJobStatus(result.jobId, 'Failed');
             }
           } else {
-            console.log('No callback found for job: ', jobId, ' with action: ', actionName);
+            console.info(`${enums.packageName} - No callback found for queue: ${queueName}, action: ${actionName}`);
             await updateJobStatus(result.jobId, 'NoCallbackFound', 3600);
           }
         }
       }
       catch (error) {
-        console.error('Error in workerCallback: ', error);
+        console.error(`${enums.packageName} - Error in workerCallback for queue: ${queueName}: `, error);
         throw new Error("Error in workerCallback");
       }
     }

@@ -40,14 +40,15 @@ function getRandomNumberBetween(min = 1, max = 10) {
 
 /**
  * The function `pickNumberFromPrimes` selects a prime number from a predefined list based on the
- * current epoch time in seconds.
+ * current time and a random offset.
  * @returns The function `pickNumberFromPrimes` returns a prime number from the `primes` array based on
- * the current epoch time in seconds.
+ * a calculation involving the current epoch time in seconds and a random offset.
  */
 function pickNumberFromPrimes() {
   const primes = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61];
   const currentTime = Math.floor(Date.now() / 1000); // Current epoch time in seconds
-  const index = currentTime % primes.length; // Using modulo to pick index based on current time
+  const randomOffset = Math.floor(Math.random() * primes.length); // Random offset within primes array
+  const index = (currentTime + randomOffset) % primes.length; // Adding randomOffset to currentTime
   return primes[index];
 }
 
