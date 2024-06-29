@@ -157,7 +157,3 @@ main();
 ## License
 
 This project is licensed under the MIT License.
-
----
-
-Feel free to customize the README file further based on your specific requirements or additional functionalities of your package.
