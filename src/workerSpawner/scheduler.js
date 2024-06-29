@@ -1,8 +1,7 @@
 
 const CronJob = require('cron').CronJob;
 const Worker = require('./worker');
-const { getRedis } = require('../redis');
-const enums = require('../helper/enums');
+const { nanoTime, pickNumberFromPrimes } = require('../helper/utils');
 
 /**
  * @desc - Create the background task 
@@ -21,22 +20,37 @@ function createBackgroundTask(taskName, time, info, action, onComplete) {
   task.start();
 }
 
+/**
+ * The _onComplete function logs a message indicating the completion of a task along with additional
+ * information.
+ * @param taskName - The `taskName` parameter is a string that represents the name of the task that has
+ * been completed.
+ * @param info - The `info` parameter is a piece of information or data that provides details about the
+ * completion of the task specified by `taskName`. It could be a status message, result, or any other
+ * relevant information related to the task completion.
+ */
 function _onComplete(taskName, info) {
   console.debug(`${taskName} completed, info: ${info}`);
 };
 
-async function getJobTime() {
-  const smallestMultiple = Math.ceil(3 / 3) * 3;
-  const largestMultiple = Math.floor(30 / 3) * 3;
-  const randomMultiple = smallestMultiple + Math.floor(Math.random() * ((largestMultiple - smallestMultiple) / 3 + 1)) * 3;
-  return randomMultiple;
-}
-
+/**
+ * The function `startPolling` asynchronously starts a polling process with a specified number of
+ * workers and uses prime numbers to reduce collisions between workers.
+ * @param callbacksMap - The `callbacksMap` parameter is an object that contains key-value pairs where
+ * the key is a unique identifier for a specific callback function, and the value is the actual
+ * callback function itself. This map is used to associate callback functions with their respective
+ * identifiers so that they can be executed when certain events occur during
+ * @param maxWorkers - The `maxWorkers` parameter specifies the maximum number of workers that can be
+ * spawned for processing tasks concurrently. It helps in controlling the workload distribution and
+ * resource utilization.
+ */
 async function startPolling(callbacksMap, maxWorkers) {
   try {
-    const time = await getJobTime();
+    const time = pickNumberFromPrimes(); // this will pick a random number from prime numbers, using prime helps to reduce the collision between the workers from different nodes or different instances (1st preventer)
     const worker = new Worker({ maxWorkers, callbacksMap });
-    createBackgroundTask(`Queue Jobs Worker Spawner`, `${time} * * * * *`, {}, worker.spawn.bind(worker), _onComplete);
+    const taskName = `QueueWorkerSpawner-` + nanoTime();
+    console.debug(`Task Name: ${taskName}, Time: ${time}`);
+    createBackgroundTask(taskName, `*/${time} * * * * *`, {}, worker.spawn.bind(worker), _onComplete);
   }
   catch (ex) {
     console.error("ex: ", ex);

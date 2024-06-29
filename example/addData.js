@@ -14,9 +14,20 @@ const uniQManager = new UniQManager({
   }
 });
 
+async function addDataToQueue() {
+  const noOfQueue = 10, noOfData = 1;
+
+  for (let i = 0; i < noOfQueue; i++) {
+    for (let j = 0; j < noOfData; j++) {
+      const result = await uniQManager.addToQ(`queue-no-${i}`, { "projectName": "Queue-" + i, "projectId": `${i}${j}` }, "logProject");
+      console.log("Data added: ", result);
+    }
+  }
+}
+
 // Start the workers and add data to the queue
 function main() {
-  uniQManager.startWorkers(5);
+  addDataToQueue();
 }
 
 main();

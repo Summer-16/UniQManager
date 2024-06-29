@@ -8,14 +8,14 @@ const uniQManager = new UniQManager({
   callbacksMap: {
     logProject: async (data) => {
       console.log("Running logProject callback");
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log(`Logging the current project data received from queue:`, data);
     }
   }
 });
 
 async function addDataToQueue() {
-  const noOfQueue = 30, noOfData = 10;
+  const noOfQueue = 5, noOfData = 1;
 
   for (let i = 0; i < noOfQueue; i++) {
     for (let j = 0; j < noOfData; j++) {
