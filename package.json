@@ -22,7 +22,7 @@
     "nodeQueue"
   ],
   "files": [
-    "dist"
+    "src"
   ],
   "main": "src/index.js",
   "scripts": {
