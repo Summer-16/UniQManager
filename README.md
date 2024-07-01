@@ -1,4 +1,4 @@
-# UniQManager
+# [UniQManager](https://www.npmjs.com/package/uniqmanager)
 
 UniQManager is a Node.js library for managing queues with Redis. It supports adding data to queues, starting worker processes to handle the queued data, and checking the status of jobs.
 
