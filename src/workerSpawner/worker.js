@@ -52,12 +52,12 @@ class Worker {
           if (unLockedQueues.length === 0) {
             releaseQueueReadingLock(taskName);
             if (this.debug)
-              console.debug(`${enums.packageName} - No unlocked queues found, releasing lock and exiting...`);
+              console.info(`${enums.packageName} - No unlocked queues found, releasing lock and exiting...`);
             return;
           } else {
             const iterations = Math.min(noOfWorkersToSpawn, unLockedQueues.length);
             if (this.debug)
-              console.debug(`${enums.packageName} - Current worker count: ${this.currentWorkerCount}, Max worker count: ${this.maxWorkers}, No of workers to spawn: ${iterations}`);
+              console.info(`${enums.packageName} - Current worker count: ${this.currentWorkerCount}, Max worker count: ${this.maxWorkers}, No of workers to spawn: ${iterations}`);
             for (let i = 0; i < iterations; i++) {
               const queueName = unLockedQueues[i];
               this.currentWorkerCount = this.currentWorkerCount + 1;
@@ -66,7 +66,7 @@ class Worker {
                   await removeQueueLock(queueName);
                   this.currentWorkerCount = this.currentWorkerCount - 1;
                   if (this.debug)
-                    console.debug(`${enums.packageName} - Worker completed job: ${queueName}`);
+                    console.info(`${enums.packageName} - Worker completed job: ${queueName}`);
                 })
                 .catch(async (err) => {
                   await removeQueueLock(queueName);
@@ -79,7 +79,7 @@ class Worker {
         }
       } else {
         if (this.debug)
-          console.debug(`${enums.packageName} - Max worker count reached, exiting...`);
+          console.info(`${enums.packageName} - Max worker count reached, exiting...`);
       }
     } catch (error) {
       console.error(`${enums.packageName} - Error in spawn: `, error);

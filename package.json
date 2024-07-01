@@ -1,7 +1,7 @@
 {
   "name": "uniqmanager",
   "description": "A Redis based nodejs queue, with global workers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Shivam Parashar",
     "email": "shivamparashar33@gmail.com",
@@ -26,10 +26,27 @@
   ],
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "npm install && husky init",
+    "start": "node example/index.js",
+    "pre-commit": "lint-staged",
+    "lint:check": "eslint .",
+    "lintreport": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prepare": "husky"
   },
   "dependencies": {
     "cron": "^3.1.7",
     "ioredis": "^5.4.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "eslint": "^9.6.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint"
+    ]
   }
 }

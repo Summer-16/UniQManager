@@ -2,6 +2,8 @@
 
 UniQManager is a Node.js library for managing queues with Redis. It supports adding data to queues, starting worker processes to handle the queued data, and checking the status of jobs.
 
+One unique feature is it support one worker per queue, globally withing multiple instances of nodejs server. This is useful when you want to process data in a queue in a sequential manner.
+
 ## Installation
 
 To install the UniQManager package, use npm:
@@ -39,6 +41,30 @@ const uniQManager = new UniQManager({
   }
 });
 ```
+
+### Options
+`redisConfig`: The Redis configuration object containing the host and port. It also supports username and password.
+`options`: The options object containing the following properties:
+- `maxWorkers`: The maximum number of workers to start.
+- `finishedAge`: The time in milliseconds to keep finished jobs in the database.
+- `failedAge`: The time in milliseconds to keep failed jobs in the database.
+- `debug`: A boolean value to enable or disable debug mode.
+- `callbacksMap`: An object containing the action names and their corresponding callback functions.
+
+### Callbacks
+The `callbacksMap` object contains the action names and their corresponding callback functions. The callback functions are asynchronous and take the data as an argument.
+Its important to note that the callback function should be defined before adding data to the queue. and the action name should be the same as the one used when adding data to the queue.
+
+```javascript
+callbacksMap: {
+  logProject: async (data) => {
+    console.log('Running logProject callback');
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log('Logging the current project data received from queue:', data);
+  }
+}
+```
+
 
 ### Adding Data to a Queue
 
@@ -101,8 +127,7 @@ new UniQManager(props);
   - `data`: The data to add to the queue.
   - `action`: The action name.
 
-- `startWorkers(noOfWorkers)`: Starts worker processes.
-  - `noOfWorkers`: The number of workers to start.
+- `startWorkers()`: Starts worker processes.
 
 - `getJobStatus(jobId)`: Retrieves the status of a job by its ID.
   - `jobId`: The job ID.

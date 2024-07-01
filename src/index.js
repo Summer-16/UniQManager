@@ -45,11 +45,9 @@ class UniQManager {
   }
 
   /**
-   * The startWorkers function initiates polling with a specified number of workers.
-   * @param noOfWorkers - The `noOfWorkers` parameter specifies the number of workers that will be
-   * started for polling.
+   * The `startWorkers` function calls the `startPolling` function with the provided options.
    */
-  startWorkers(noOfWorkers) {
+  startWorkers() {
     startPolling(this.options);
   }
 

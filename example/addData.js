@@ -12,9 +12,9 @@ const uniQManager = new UniQManager({
     debug: true,
     callbacksMap: {
       logProject: async (data) => {
-        console.log("Running logProject callback");
+        console.info("Running logProject callback");
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log(`Logging the current project data received from queue:`, data);
+        console.info(`Logging the current project data received from queue:`, data);
       }
     }
   }
@@ -26,7 +26,7 @@ async function addDataToQueue() {
   for (let i = 0; i < noOfQueue; i++) {
     for (let j = 0; j < noOfData; j++) {
       const result = await uniQManager.addToQ(`queue-no-${i}`, { "projectName": "Queue-" + i, "projectId": `${i}${j}` }, "logProject");
-      console.log("Data added: ", result);
+      console.info("Data added: ", result);
     }
   }
 }
