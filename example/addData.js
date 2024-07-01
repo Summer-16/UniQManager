@@ -6,15 +6,16 @@ const uniQManager = new UniQManager({
     port: "6379"
   },
   options: {
-    maxWorkers: 5,
-    finishedAge: 10000,
-    failedAge: 60000,
+    noOfWorkers: 2,
+    finishedAge: 10,
+    failedAge: 60,
     debug: true,
     callbacksMap: {
       logProject: async (data) => {
         console.info("Running logProject callback");
         await new Promise((resolve) => setTimeout(resolve, 2000));
         console.info(`Logging the current project data received from queue:`, data);
+        return { data: { type: "Test" } };
       }
     }
   }

@@ -28,8 +28,8 @@ const uniQManager = new UniQManager({
   },
   options: {
     maxWorkers: 5,
-    finishedAge: 10000,
-    failedAge: 60000,
+    finishedAge: 10,
+    failedAge: 60,
     debug: true,
     callbacksMap: {
       logProject: async (data) => {
@@ -45,11 +45,11 @@ const uniQManager = new UniQManager({
 ### Options
 `redisConfig`: The Redis configuration object containing the host and port. It also supports username and password.
 `options`: The options object containing the following properties:
-- `maxWorkers`: The maximum number of workers to start.
-- `finishedAge`: The time in milliseconds to keep finished jobs in the database.
-- `failedAge`: The time in milliseconds to keep failed jobs in the database.
-- `debug`: A boolean value to enable or disable debug mode.
-- `callbacksMap`: An object containing the action names and their corresponding callback functions.
+- `maxWorkers`: The maximum number of workers to start, Default: 5.
+- `finishedAge`: The time in second to keep finished jobs in the database, Default: 3600.
+- `failedAge`: The time in second to keep failed jobs in the database, Default: 86400.
+- `debug`: A boolean value to enable or disable debug mode, Default: false.
+- `callbacksMap`: An object containing the action names and their corresponding callback functions, Default: {}.
 
 ### Callbacks
 The `callbacksMap` object contains the action names and their corresponding callback functions. The callback functions are asynchronous and take the data as an argument.
@@ -146,8 +146,8 @@ const uniQManager = new UniQManager({
   },
   options: {
     maxWorkers: 5,
-    finishedAge: 10000,
-    failedAge: 60000,
+    finishedAge: 10,
+    failedAge: 60,
     debug: true,
     callbacksMap: {
       logProject: async (data) => {

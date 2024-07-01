@@ -115,16 +115,16 @@ class Worker {
           const callback = this.callbacksMap[actionName];
           if (callback) {
             try {
-              await callback(payload);
-              await updateJobStatus(result.jobId, 'Finished', this.finishedAge);
+              const callbackRes = await callback(payload);
+              await updateJobStatus(result.jobId, JSON.stringify({ status: 'Finished', result: callbackRes }), this.finishedAge);
             }
             catch (error) {
               console.error(`${enums.packageName} - Error in workerCallback for queue: ${queueName}: `, error);
-              await updateJobStatus(result.jobId, 'Failed', this.failedAge);
+              await updateJobStatus(result.jobId, JSON.stringify({ status: 'Failed', result: error.message }), this.failedAge);
             }
           } else {
             console.info(`${enums.packageName} - No callback found for queue: ${queueName}, action: ${actionName}`);
-            await updateJobStatus(result.jobId, 'NoCallbackFound', this.finishedAge);
+            await updateJobStatus(result.jobId, JSON.stringify({ status: 'NoCallbackFound', result: null }), this.finishedAge);
           }
         }
       }
