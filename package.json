@@ -1,7 +1,7 @@
 {
   "name": "uniqmanager",
   "description": "A Redis based nodejs queue, with global workers",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Shivam Parashar",
     "email": "shivamparashar33@gmail.com",
