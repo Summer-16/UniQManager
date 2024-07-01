@@ -7,8 +7,8 @@ const uniQManager = new UniQManager({
   },
   options: {
     noOfWorkers: 2,
-    finishedAge: 10,
-    failedAge: 60,
+    finishedAge: 150,
+    failedAge: 300,
     debug: true,
     callbacksMap: {
       logProject: async (data) => {
@@ -22,7 +22,7 @@ const uniQManager = new UniQManager({
 });
 
 async function addDataToQueue() {
-  const noOfQueue = 10, noOfData = 1;
+  const noOfQueue = 10, noOfData = 5;
 
   for (let i = 0; i < noOfQueue; i++) {
     for (let j = 0; j < noOfData; j++) {

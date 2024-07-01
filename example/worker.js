@@ -7,8 +7,8 @@ const uniQManager = new UniQManager({
   },
   options: {
     noOfWorkers: 2,
-    finishedAge: 10,
-    failedAge: 60,
+    finishedAge: 150,
+    failedAge: 300,
     debug: true,
     callbacksMap: {
       logProject: async (data) => {
